@@ -11,8 +11,8 @@
 # - cleanup: revert merge to main, close backport-pr and delete both new branches
 
 function main() {
-  name="Case 1"
-  email="case1[bot]@users.noreply.github.com"
+  name="github-actions[bot]"
+  email="github-actions[bot]@users.noreply.github.com"
   export GIT_AUTHOR_NAME="$name"
   export GIT_AUTHOR_EMAIL="$email"
   export GIT_COMMITTER_NAME="$name"
