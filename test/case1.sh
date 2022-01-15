@@ -51,7 +51,7 @@ function cleanup() {
   git checkout main
   deleteBranch case1-backport-target
   deleteBranch case1-new-changes
-  revertMergeCommit "$mergeCommit"
+  revertCommit "$mergeCommit"
 }
 
 function deleteBranch() {
