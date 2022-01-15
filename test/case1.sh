@@ -10,6 +10,13 @@
 # - check that pull request is opened to target with cherrypicked commit
 # - cleanup: revert merge to main, close backport-pr and delete both new branches
 
+name="Case 1"
+email="case1[bot]@users.noreply.github.com"
+export GIT_AUTHOR_NAME="$name"
+export GIT_AUTHOR_EMAIL="$email"
+export GIT_COMMITTER_NAME="$name"
+export GIT_COMMITTER_EMAIL="$email"
+
 git branch case1-backport-target
 git push -u origin case1-backport-target
 
