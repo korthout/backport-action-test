@@ -40,13 +40,10 @@ function main() {
     --merge \
     --subject "case(1): merge pull request"
 
-  mergeCommit=$(gh pr view \
-    --json mergeCommit \ 
-    --jq '.mergeCommit.oid')
+  mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
 
-    # wait for workflow to finish
-    # check that pull request is opened to target with cherrypicked commit
-    # cleanup
+  # wait for workflow to finish
+  # check that pull request is opened to target with cherrypicked commit
 }
 
 function cleanup() {
@@ -65,7 +62,7 @@ function deleteBranch() {
 function revertCommit() {
   if [ ! -z "$1" ]; then
     git pull
-    git revert --mainline 1 "$1"
+    git revert --mainline 1 "$1" --no-edit
     git push
   fi
 }
