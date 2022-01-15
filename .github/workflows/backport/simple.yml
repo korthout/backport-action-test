@@ -1,0 +1,25 @@
+name: Backport on pull_request[closed]
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  backport:
+    name: Backport
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # so it can comment
+      pull-requests: write # so it can create pull requests
+    # Don't run on closed unmerged pull requests
+    if: github.event.pull_request.merged
+    steps:
+      - uses: actions/checkout@v2
+      - name: Backport
+        uses: zeebe-io/backport-action@v0.0.7
+        with:
+          # Required
+          # Token to authenticate requests to GitHub
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Required
+          # Working directory for the backport action
+          github_workspace: ${{ github.workspace }}
