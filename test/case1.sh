@@ -27,7 +27,8 @@ git checkout case1-new-changes
 
 mkdir case1
 echo "A changed line is added" >> case1/file1
-git commit -am "case(1): add changed line"
+git add case1/file1
+git commit -m "case(1): add changed line"
 git push -u origin case1-new-changes
 
 gh pr create \
