@@ -9,4 +9,4 @@ jobs:
       - name: test
         run: test/case1.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
