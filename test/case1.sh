@@ -10,6 +10,8 @@
 # - check that pull request is opened to target with cherrypicked commit
 # - cleanup: revert merge to main, close backport-pr and delete both new branches
 
+set -e
+
 name="Case 1"
 email="case1[bot]@users.noreply.github.com"
 export GIT_AUTHOR_NAME="$name"
