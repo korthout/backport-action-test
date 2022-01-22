@@ -112,7 +112,7 @@ function revertCommit() {
   fi
 }
 
-set -e
+set -ex
 mergeCommit=""
 trap 'cleanup' EXIT
 main
