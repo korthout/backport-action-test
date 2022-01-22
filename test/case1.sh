@@ -86,6 +86,9 @@ function main() {
     exit 20
   fi
 
+  # find the backport_branch for later cleanup
+  backport_branch=$(gh pr list --base case1-backport-target --json headRefName --jq 'first | .headRefName')
+
   # check that backport pull request contains cherry picked commits
   local backport_commit_matches
   backport_commit_matches=$(gh pr list \
@@ -122,25 +125,32 @@ function cleanup() {
   git checkout main
   deleteBranch case1-backport-target
   deleteBranch case1-new-changes
+  deleteBranch "$backport_branch"
   revertCommit "$mergeCommit"
   # we do not have to close the backport pr
   # it closes automatically when we delete its target branch
 }
 
 function deleteBranch() {
-  git branch --delete "$1"
-  git push origin --delete "$1"
+  if [ -n "$1" ]; then
+    git branch --delete "$1"
+    git push origin --delete "$1"
+  fi
 }
 
 function revertCommit() {
-  if [ ! -z "$1" ]; then
+  if [ -n "$1" ]; then
     git pull
     git revert --mainline 1 "$1" --no-edit
     git push
   fi
 }
 
-set -ex
+# Initialise clean up
 mergeCommit=""
+backport_branch=""
 trap 'cleanup' EXIT
+
+# Run script
+set -ex
 main
