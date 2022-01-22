@@ -7,6 +7,7 @@
 # - open a pull request to merge it to main
 # - merge the pull request
 # - find the commit sha of the commit that merged the pr
+# - find the commit sha of the head of the pr
 # - find the backport-pr-closed.yml workflow run on pull_request[closed]
 # - wait for workflow to finish
 # - check that pull request is opened to target with cherrypicked commit
@@ -52,12 +53,16 @@ function main() {
   # find the commit sha of the commit that merged the pr
   mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
 
+  # find the commit sha of the head of the pr
+  local headSha
+  headSha=gh pr view --json commits message-correlation --jq '.commits | map(.oid) | last' | cat
+
   # find the backport-pr-closed.yml workflow run on pull_request[closed]
   local backport_run_id
   local checks_index=0
   while [ -z "$backport_wf_id" ]; do
     sleep 1
-    findBackportRun "$mergeCommit"
+    findBackportRun "$headSha"
     (("checks_index+=1"))
     if [ "$checks_index" -gt 60 ]; then
       exit 10
