@@ -1,11 +1,13 @@
 #! /bin/bash
 
-# Test Case 1
-# - pr-location: non-fork
+# Test Case 2
+# - pr-location: fork
 # - commits: 1
 # - merge-strategy: merge commit
 # - workflow: backport-pr-closed.yml
 # - expects: 1 backport pr opened
+
+# This test is expected to be run in a checked out forked repo 
 
 # When run this test will:
 # - create a branch from main as backport target
@@ -32,6 +34,15 @@ function main() {
   export GIT_AUTHOR_EMAIL="$email"
   export GIT_COMMITTER_NAME="$name"
   export GIT_COMMITTER_EMAIL="$email"
+
+  # resync forked repo from original
+  gh repo sync \
+    --force \
+    --source korthout/backport-action-test \
+    backport-action/backport-action-test
+
+  # resync local repo from remote forked repo
+  gh repo sync --force --source backport-action/backport-action-test
 
   # create a branch from main as backport target
   git branch case1-backport-target

@@ -2,11 +2,22 @@ name: Test
 on: workflow_dispatch
 
 jobs:
-  test:
+  test1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: test
+      - name: test case 1
         run: test/case1.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
+
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          repository: backport-action/backport-action-test
+      - name: test case 2
+        run: test/case2.sh
         env:
           GITHUB_TOKEN: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
