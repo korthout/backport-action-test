@@ -55,7 +55,7 @@ function main() {
 
   # find the commit sha of the head of the pr
   local headSha
-  headSha=gh pr view --json commits --jq '.commits | map(.oid) | last' | cat
+  headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
 
   # find the backport-pr-closed.yml workflow run on pull_request[closed]
   local backport_run_id
