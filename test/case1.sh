@@ -60,7 +60,7 @@ function main() {
   # find the backport-pr-closed.yml workflow run on pull_request[closed]
   local backport_run_id
   local checks_index=0
-  while [ -z "$backport_wf_id" ]; do
+  while [ -z "$backport_run_id" ]; do
     sleep 1
     findBackportRun "$headSha"
     (("checks_index+=1"))
