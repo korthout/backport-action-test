@@ -87,7 +87,7 @@ function findBackportRun() {
       --limit 10 \
       --jq "map(select(.headSha == \"$1\")) | first | \"\(.databaseId)\"")
   if [ ! "$wf_id" = "null" ]; then
-    backport_run_id=wf_id
+    backport_run_id="$wf_id"
   fi
 }
 
