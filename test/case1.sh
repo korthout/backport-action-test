@@ -10,11 +10,14 @@
 # - find the commit sha of the head of the pr
 # - find the backport-pr-closed.yml workflow run on pull_request[closed]
 # - wait for workflow to finish
-# - check that pull request is opened to target with cherrypicked commit
+# - check that backport pull request is opened to target
+# - check that backport pull request contains cherry picked commits
 # - cleanup: revert merge to main, close backport-pr and delete both new branches
 
 # Non-zero exitcodes:
 # 10: Unable to find backport workflow run caused by merging a PR after trying for 60 seconds
+# 20: Unable to find backport pr (expected only 1, but is either none, or multiple)
+# 30: Backport pr does not contain expected cherry picked commits
 function main() {
   name="github-actions[bot]"
   email="github-actions[bot]@users.noreply.github.com"
@@ -69,14 +72,30 @@ function main() {
       exit 10
     fi
   done
-
   echo "found backport-pr-closed workflow run: $backport_run_id"
 
   # wait for workflow to finish
-  gh run watch "$backport_run_id" && echo "backport workflow finished"
+  gh run watch "$backport_run_id" \
+    && echo "backport-pr-closed workflow run $backport_run_id finished"
 
-  # todo:
-  # check that pull request is opened to target with cherrypicked commit
+  # check that backport pull request is opened to target
+  local backport_prs
+  backport_prs=$(gh pr list --base case1-backport-target --json number --jq 'length')
+  if [ ! 1 -eq "$backport_prs" ]; then
+    echoerr "expected 1 open backport pr for case1, but found $backport_prs open prs"
+    exit 20
+  fi
+
+  # check that backport pull request contains cherry picked commits
+  local backport_commit_matches
+  backport_commit_matches=$(gh pr list \
+    --base case1-backport-target \
+    --json commits \
+    --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit $headSha.*\")) | length")
+  if [ ! 1 -eq "$backport_commit_matches" ]; then
+    echoerr "expected 1 cherry picked commit for $headSha, but found $backport_commit_matches"
+    exit 30
+  fi
 }
 
 # Find the run of the backport workflow that was triggered for a specific head sha
@@ -94,12 +113,18 @@ function findBackportRun() {
   fi
 }
 
+function echoerr() {
+  printf "%s\n" "$*" >&2;
+}
+
 function cleanup() {
   set +e
   git checkout main
   deleteBranch case1-backport-target
   deleteBranch case1-new-changes
   revertCommit "$mergeCommit"
+  # we do not have to close the backport pr
+  # it closes automatically when we delete its target branch
 }
 
 function deleteBranch() {
