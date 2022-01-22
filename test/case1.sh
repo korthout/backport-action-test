@@ -43,7 +43,8 @@ function main() {
     --head case1-new-changes \
     --base main \
     --title "Case(1): Add a changed line" \
-    --body "Adds a changed line"
+    --body "Adds a changed line" \
+    --label 'backport case1-backport-target'
 
   # merge the pull request
   gh pr merge \
