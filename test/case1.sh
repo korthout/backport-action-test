@@ -71,8 +71,10 @@ function main() {
 
   echo "found backport-pr-closed workflow run: $backport_run_id"
 
-  # todo:
   # wait for workflow to finish
+  gh run watch "$backport_run_id" && echo "backport workflow finished"
+
+  # todo:
   # check that pull request is opened to target with cherrypicked commit
 }
 
