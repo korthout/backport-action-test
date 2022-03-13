@@ -43,8 +43,7 @@ function main() {
 
   # add the forked repo as remote
   # name the forked repo fork, because origin is already the upstream
-  git remote add --fetch \
-    fork https://github.com/backport-action/backport-action-test.git
+  git remote -v
 
   # assume that a branch exists on origin as backport target
   # git branch case2-backport-target
@@ -55,14 +54,13 @@ function main() {
   git checkout case2-new-changes
 
   # add a commit to new
-  # and push it to fork
   mkdir case2
   echo "A changed line is added" >> case2/file1
   git add case2/file1
   git commit -m "case(2): add changed line"
-  git push -u fork case2-new-changes
+  git push -u origin case2-new-changes
 
-  # open a pull request to merge it to main of origin
+  # open a pull request to merge it to main of upstream
   gh pr create \
     --head case2-new-changes \
     --base main \
