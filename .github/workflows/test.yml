@@ -1,9 +1,19 @@
 name: Test
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      case:
+        type: choice
+        description: Case
+        options: 
+        - all
+        - 1
+        - 2
 
 jobs:
   test1:
     runs-on: ubuntu-latest
+    if: github.event.inputs.case == 'all' || github.event.inputs.case == 1
     steps:
       - uses: actions/checkout@v2
       - name: test case 1
@@ -13,6 +23,7 @@ jobs:
 
   test2:
     runs-on: ubuntu-latest
+    if: github.event.inputs.case == 'all' || github.event.inputs.case == 2
     steps:
       - uses: actions/checkout@v2
         with: 
