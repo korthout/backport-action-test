@@ -46,10 +46,9 @@ function main() {
   git remote add --fetch \
     fork https://github.com/backport-action/backport-action-test.git
 
-  # create a branch from main as backport target
-  # only needs to exist on origin, not on fork
-  git branch case2-backport-target
-  git push -u origin case2-backport-target
+  # assume that a branch exists on origin as backport target
+  # git branch case2-backport-target
+  # git push -u origin case2-backport-target
 
   # create a branch from main for new changes
   git branch case2-new-changes
@@ -148,7 +147,8 @@ function echoerr() {
 function cleanup() {
   set +e
   git checkout main
-  deleteBranch case2-backport-target
+  # dont delete the backport-target, this script has no permissions to recreate it
+  # deleteBranch case2-backport-target
   deleteBranch case2-new-changes
   deleteBranch "$backport_branch"
   revertCommit "$mergeCommit"
