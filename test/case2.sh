@@ -48,28 +48,28 @@ function main() {
 
   # create a branch from main as backport target
   # only needs to exist on origin, not on fork
-  git branch case1-backport-target
-  git push -u origin case1-backport-target
+  git branch case2-backport-target
+  git push -u origin case2-backport-target
 
   # create a branch from main for new changes
-  git branch case1-new-changes
-  git checkout case1-new-changes
+  git branch case2-new-changes
+  git checkout case2-new-changes
 
   # add a commit to new
   # and push it to fork
-  mkdir case1
-  echo "A changed line is added" >> case1/file1
-  git add case1/file1
-  git commit -m "case(1): add changed line"
-  git push -u fork case1-new-changes
+  mkdir case2
+  echo "A changed line is added" >> case2/file1
+  git add case2/file1
+  git commit -m "case(2): add changed line"
+  git push -u fork case2-new-changes
 
   # open a pull request to merge it to main of origin
   gh pr create \
-    --head case1-new-changes \
+    --head case2-new-changes \
     --base main \
-    --title "Case(1): Add a changed line" \
+    --title "Case(2): Add a changed line" \
     --body "Adds a changed line" \
-    --label 'backport case1-backport-target'
+    --label 'backport case2-backport-target'
 
   # the rest is commented, because we first need to check that the pr is created correctly
   # that is, the local branch should not have been pushed to origin, only to fork
@@ -77,7 +77,7 @@ function main() {
   # # merge the pull request
   # gh pr merge \
   #   --merge \
-  #   --subject "case(1): merge pull request"
+  #   --subject "case(2): merge pull request"
 
   # # find the commit sha of the commit that merged the pr
   # mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
@@ -105,19 +105,19 @@ function main() {
 
   # # check that backport pull request is opened to target
   # local backport_prs
-  # backport_prs=$(gh pr list --base case1-backport-target --json number --jq 'length')
+  # backport_prs=$(gh pr list --base case2-backport-target --json number --jq 'length')
   # if [ ! 1 -eq "$backport_prs" ]; then
-  #   echoerr "expected 1 open backport pr for case1, but found $backport_prs open prs"
+  #   echoerr "expected 1 open backport pr for case2, but found $backport_prs open prs"
   #   exit 20
   # fi
 
   # # find the backport_branch for later cleanup
-  # backport_branch=$(gh pr list --base case1-backport-target --json headRefName --jq 'first | .headRefName')
+  # backport_branch=$(gh pr list --base case2-backport-target --json headRefName --jq 'first | .headRefName')
 
   # # check that backport pull request contains cherry picked commits
   # local backport_commit_matches
   # backport_commit_matches=$(gh pr list \
-  #   --base case1-backport-target \
+  #   --base case2-backport-target \
   #   --json commits \
   #   --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit $headSha.*\")) | length")
   # if [ ! 1 -eq "$backport_commit_matches" ]; then
@@ -148,8 +148,8 @@ function echoerr() {
 function cleanup() {
   set +e
   git checkout main
-  deleteBranch case1-backport-target
-  deleteBranch case1-new-changes
+  deleteBranch case2-backport-target
+  deleteBranch case2-new-changes
   deleteBranch "$backport_branch"
   revertCommit "$mergeCommit"
   # we do not have to close the backport pr
