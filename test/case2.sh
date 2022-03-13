@@ -43,7 +43,6 @@ function main() {
 
   # add the forked repo as remote
   # name the forked repo fork, because origin is already the upstream
-  git remote -v
 
   # assume that a branch exists on origin as backport target
   # git branch case2-backport-target
@@ -62,6 +61,7 @@ function main() {
 
   # open a pull request to merge it to main of upstream
   gh pr create \
+    --repo korthout/backport-action-test \
     --head case2-new-changes \
     --base main \
     --title "Case(2): Add a changed line" \
