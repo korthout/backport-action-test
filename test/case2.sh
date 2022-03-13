@@ -44,7 +44,8 @@ function main() {
   # add the upstream repo as upstream
   # the gh cli will use the knowledge of both origin and upstream remotes
   # to determine where to create the pr
-  git remote add upstream https://github.com/korthout/backport-action-test.git
+  git remote add --fetch \
+    upstream https://github.com/korthout/backport-action-test.git
 
   # assume that a branch exists on origin as backport target
   # git branch case2-backport-target
@@ -63,7 +64,7 @@ function main() {
   # open a pull request to merge it to main of upstream
   gh pr create \
     --head case2-new-changes \
-    --base main \
+    --base upstream/main \
     --title "Case(2): Add a changed line" \
     --body "Adds a changed line" \
     --label 'backport case2-backport-target'
