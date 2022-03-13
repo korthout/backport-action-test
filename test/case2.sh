@@ -41,8 +41,10 @@ function main() {
     --source korthout/backport-action-test \
     backport-action/backport-action-test
 
-  # add the forked repo as remote
-  # name the forked repo fork, because origin is already the upstream
+  # add the upstream repo as upstream
+  # the gh cli will use the knowledge of both origin and upstream remotes
+  # to determine where to create the pr
+  git remote add upstream https://github.com/korthout/backport-action-test.git
 
   # assume that a branch exists on origin as backport target
   # git branch case2-backport-target
@@ -57,11 +59,9 @@ function main() {
   echo "A changed line is added" >> case2/file1
   git add case2/file1
   git commit -m "case(2): add changed line"
-  git push -u origin case2-new-changes
 
   # open a pull request to merge it to main of upstream
   gh pr create \
-    --repo korthout/backport-action-test \
     --head case2-new-changes \
     --base main \
     --title "Case(2): Add a changed line" \
