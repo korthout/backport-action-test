@@ -41,10 +41,13 @@ function main() {
     --source korthout/backport-action-test \
     backport-action/backport-action-test
 
-  # resync local repo from remote forked repo
-  gh repo sync --force --source backport-action/backport-action-test
+  # add the forked repo as remote
+  # name the forked repo fork, because origin is already the upstream
+  git remote add --fetch \
+    fork https://github.com/backport-action/backport-action-test.git
 
   # create a branch from main as backport target
+  # only needs to exist on origin, not on fork
   git branch case1-backport-target
   git push -u origin case1-backport-target
 
@@ -53,13 +56,14 @@ function main() {
   git checkout case1-new-changes
 
   # add a commit to new
+  # and push it to fork
   mkdir case1
   echo "A changed line is added" >> case1/file1
   git add case1/file1
   git commit -m "case(1): add changed line"
-  git push -u origin case1-new-changes
+  git push -u fork case1-new-changes
 
-  # open a pull request to merge it to main
+  # open a pull request to merge it to main of origin
   gh pr create \
     --head case1-new-changes \
     --base main \
@@ -67,56 +71,59 @@ function main() {
     --body "Adds a changed line" \
     --label 'backport case1-backport-target'
 
-  # merge the pull request
-  gh pr merge \
-    --merge \
-    --subject "case(1): merge pull request"
+  # the rest is commented, because we first need to check that the pr is created correctly
+  # that is, the local branch should not have been pushed to origin, only to fork
 
-  # find the commit sha of the commit that merged the pr
-  mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
+  # # merge the pull request
+  # gh pr merge \
+  #   --merge \
+  #   --subject "case(1): merge pull request"
 
-  # find the commit sha of the head of the pr
-  local headSha
-  headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
+  # # find the commit sha of the commit that merged the pr
+  # mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
 
-  # find the backport-pr-closed.yml workflow run on pull_request[closed]
-  local backport_run_id
-  local checks_index=0
-  while [ -z "$backport_run_id" ]; do
-    sleep 1
-    findBackportRun "$headSha"
-    (("checks_index+=1"))
-    if [ "$checks_index" -gt 60 ]; then
-      exit 10
-    fi
-  done
-  echo "found backport-pr-closed workflow run: $backport_run_id"
+  # # find the commit sha of the head of the pr
+  # local headSha
+  # headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
 
-  # wait for workflow to finish
-  gh run watch "$backport_run_id" \
-    && echo "backport-pr-closed workflow run $backport_run_id finished"
+  # # find the backport-pr-closed.yml workflow run on pull_request[closed]
+  # local backport_run_id
+  # local checks_index=0
+  # while [ -z "$backport_run_id" ]; do
+  #   sleep 1
+  #   findBackportRun "$headSha"
+  #   (("checks_index+=1"))
+  #   if [ "$checks_index" -gt 60 ]; then
+  #     exit 10
+  #   fi
+  # done
+  # echo "found backport-pr-closed workflow run: $backport_run_id"
 
-  # check that backport pull request is opened to target
-  local backport_prs
-  backport_prs=$(gh pr list --base case1-backport-target --json number --jq 'length')
-  if [ ! 1 -eq "$backport_prs" ]; then
-    echoerr "expected 1 open backport pr for case1, but found $backport_prs open prs"
-    exit 20
-  fi
+  # # wait for workflow to finish
+  # gh run watch "$backport_run_id" \
+  #   && echo "backport-pr-closed workflow run $backport_run_id finished"
 
-  # find the backport_branch for later cleanup
-  backport_branch=$(gh pr list --base case1-backport-target --json headRefName --jq 'first | .headRefName')
+  # # check that backport pull request is opened to target
+  # local backport_prs
+  # backport_prs=$(gh pr list --base case1-backport-target --json number --jq 'length')
+  # if [ ! 1 -eq "$backport_prs" ]; then
+  #   echoerr "expected 1 open backport pr for case1, but found $backport_prs open prs"
+  #   exit 20
+  # fi
 
-  # check that backport pull request contains cherry picked commits
-  local backport_commit_matches
-  backport_commit_matches=$(gh pr list \
-    --base case1-backport-target \
-    --json commits \
-    --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit $headSha.*\")) | length")
-  if [ ! 1 -eq "$backport_commit_matches" ]; then
-    echoerr "expected 1 cherry picked commit for $headSha, but found $backport_commit_matches"
-    exit 30
-  fi
+  # # find the backport_branch for later cleanup
+  # backport_branch=$(gh pr list --base case1-backport-target --json headRefName --jq 'first | .headRefName')
+
+  # # check that backport pull request contains cherry picked commits
+  # local backport_commit_matches
+  # backport_commit_matches=$(gh pr list \
+  #   --base case1-backport-target \
+  #   --json commits \
+  #   --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit $headSha.*\")) | length")
+  # if [ ! 1 -eq "$backport_commit_matches" ]; then
+  #   echoerr "expected 1 cherry picked commit for $headSha, but found $backport_commit_matches"
+  #   exit 30
+  # fi
 }
 
 # Find the run of the backport workflow that was triggered for a specific head sha
