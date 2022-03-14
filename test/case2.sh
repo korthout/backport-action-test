@@ -61,10 +61,9 @@ function main() {
   git add case2/file1
   git commit -m "case(2): add changed line"
 
-  # open a pull request to merge it to main of upstream
+  # open a pull request to upstream
   gh pr create \
-    --head case2-new-changes \
-    --base upstream/main \
+    --head backport-action:case2-new-changes \
     --title "Case(2): Add a changed line" \
     --body "Adds a changed line" \
     --label 'backport case2-backport-target'
