@@ -60,6 +60,7 @@ function main() {
   echo "A changed line is added" >> case2/file1
   git add case2/file1
   git commit -m "case(2): add changed line"
+  git push -u origin case2-new-changes
 
   # open a pull request to upstream
   gh pr create \
