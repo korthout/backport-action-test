@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Backport
-        uses: zeebe-io/backport-action@v0.0.7
+        uses: zeebe-io/backport-action@239-disable-request-reviewers
         with:
           # Required
           # Token to authenticate requests to GitHub
