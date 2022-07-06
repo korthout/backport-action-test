@@ -21,8 +21,6 @@
 # - find the backport-pr-target-closed.yml workflow run on pull_request[closed]
 # - wait for workflow to finish
 # - check that backport pull request is opened to target
-
-# To do:
 # - check that backport pull request contains cherry picked commits
 # - cleanup: revert merge to main, close backport-pr and delete both new branches
 
@@ -142,10 +140,12 @@ function cleanup() {
   # dont delete the backport-target, this script has no permissions to recreate it
   # deleteBranch case2-backport-target
   deleteBranch case2-new-changes
-  deleteBranch "$backport_branch"
   revertCommit "$headSha"
-  # we do not have to close the backport pr
-  # it closes automatically when we delete its target branch
+  # we have to close the backport pr directly
+  # we cannot automatically close it by deleting its branch
+  # because the branch exists on upstream
+  # #deleteBranch "$backport_branch"
+  gh pr close "$backport_branch" --delete-branch
 }
 
 function deleteBranch() {
