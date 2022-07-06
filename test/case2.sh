@@ -7,13 +7,16 @@
 # - workflow: backport-pr-closed.yml
 # - expects: 1 backport pr opened
 
-# This test is expected to be run in a checked out forked repo 
+# This test is expected to be run in a checked out forked repo
+# It also expects that the forked repo is in sync or at least close to origin
 
 # When run this test will:
 # - create a branch from main as backport target
 # - create a branch from main for new changes
 # - add a commit to new
-# - open a pull request to merge it to main
+# - open a pull request to merge it to main on origin
+
+# To do:
 # - merge the pull request
 # - find the commit sha of the commit that merged the pr
 # - find the commit sha of the head of the pr
@@ -69,45 +72,42 @@ function main() {
     --body "Adds a changed line" \
     --label 'backport case2-backport-target'
 
-  # the rest is commented, because we first need to check that the pr is created correctly
-  # that is, the local branch should not have been pushed to origin, only to fork
+  # merge the pull request
+  gh pr merge \
+    --merge \
+    --subject "case(2): merge pull request"
 
-  # # merge the pull request
-  # gh pr merge \
-  #   --merge \
-  #   --subject "case(2): merge pull request"
+  # find the commit sha of the commit that merged the pr
+  mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
 
-  # # find the commit sha of the commit that merged the pr
-  # mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
+  # find the commit sha of the head of the pr
+  local headSha
+  headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
 
-  # # find the commit sha of the head of the pr
-  # local headSha
-  # headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
+  # find the backport-pr-closed.yml workflow run on pull_request[closed]
+  local backport_run_id
+  local checks_index=0
+  while [ -z "$backport_run_id" ]; do
+    sleep 1
+    findBackportRun "$headSha"
+    (("checks_index+=1"))
+    if [ "$checks_index" -gt 60 ]; then
+      exit 10
+    fi
+  done
+  echo "found backport-pr-closed workflow run: $backport_run_id"
 
-  # # find the backport-pr-closed.yml workflow run on pull_request[closed]
-  # local backport_run_id
-  # local checks_index=0
-  # while [ -z "$backport_run_id" ]; do
-  #   sleep 1
-  #   findBackportRun "$headSha"
-  #   (("checks_index+=1"))
-  #   if [ "$checks_index" -gt 60 ]; then
-  #     exit 10
-  #   fi
-  # done
-  # echo "found backport-pr-closed workflow run: $backport_run_id"
+  # wait for workflow to finish
+  gh run watch "$backport_run_id" \
+    && echo "backport-pr-closed workflow run $backport_run_id finished"
 
-  # # wait for workflow to finish
-  # gh run watch "$backport_run_id" \
-  #   && echo "backport-pr-closed workflow run $backport_run_id finished"
-
-  # # check that backport pull request is opened to target
-  # local backport_prs
-  # backport_prs=$(gh pr list --base case2-backport-target --json number --jq 'length')
-  # if [ ! 1 -eq "$backport_prs" ]; then
-  #   echoerr "expected 1 open backport pr for case2, but found $backport_prs open prs"
-  #   exit 20
-  # fi
+  # check that backport pull request is opened to target
+  local backport_prs
+  backport_prs=$(gh pr list --base case2-backport-target --json number --jq 'length')
+  if [ ! 1 -eq "$backport_prs" ]; then
+    echoerr "expected 1 open backport pr for case2, but found $backport_prs open prs"
+    exit 20
+  fi
 
   # # find the backport_branch for later cleanup
   # backport_branch=$(gh pr list --base case2-backport-target --json headRefName --jq 'first | .headRefName')
