@@ -179,7 +179,7 @@ function revertCommit() {
     gh pr merge \
       --merge \
       --subject "case(2): revert"
-      
+    git checkout main
     deleteBranch case2-revert
   fi
 }
