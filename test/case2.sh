@@ -158,6 +158,10 @@ function deleteBranch() {
 
 function revertCommit() {
   if [ -n "$1" ]; then
+    gh repo sync \
+      --force \
+      --source korthout/backport-action-test \
+      backport-action/backport-action-test
     git checkout main
     git pull
     git branch case2-revert
