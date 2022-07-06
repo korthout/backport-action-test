@@ -102,19 +102,19 @@ function main() {
     exit 20
   fi
 
-  # # find the backport_branch for later cleanup
-  # backport_branch=$(gh pr list --base case2-backport-target --json headRefName --jq 'first | .headRefName')
+  # find the backport_branch for later cleanup
+  backport_branch=$(gh pr list --base case2-backport-target --json headRefName --jq 'first | .headRefName')
 
-  # # check that backport pull request contains cherry picked commits
-  # local backport_commit_matches
-  # backport_commit_matches=$(gh pr list \
-  #   --base case2-backport-target \
-  #   --json commits \
-  #   --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit $headSha.*\")) | length")
-  # if [ ! 1 -eq "$backport_commit_matches" ]; then
-  #   echoerr "expected 1 cherry picked commit for $headSha, but found $backport_commit_matches"
-  #   exit 30
-  # fi
+  # check that backport pull request contains cherry picked commits
+  local backport_commit_matches
+  backport_commit_matches=$(gh pr list \
+    --base case2-backport-target \
+    --json commits \
+    --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit $headSha.*\")) | length")
+  if [ ! 1 -eq "$backport_commit_matches" ]; then
+    echoerr "expected 1 cherry picked commit for $headSha, but found $backport_commit_matches"
+    exit 30
+  fi
 }
 
 # Find the run of the backport workflow that was triggered for a specific head sha
