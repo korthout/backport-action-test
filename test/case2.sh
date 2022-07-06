@@ -38,12 +38,6 @@ function main() {
   export GIT_COMMITTER_NAME="$name"
   export GIT_COMMITTER_EMAIL="$email"
 
-  # resync forked repo from original
-  gh repo sync \
-    --force \
-    --source korthout/backport-action-test \
-    backport-action/backport-action-test
-
   # add the upstream repo as upstream
   # the gh cli will use the knowledge of both origin and upstream remotes
   # to determine where to create the pr
@@ -150,7 +144,7 @@ function cleanup() {
   # deleteBranch case2-backport-target
   deleteBranch case2-new-changes
   deleteBranch "$backport_branch"
-  revertCommit "$mergeCommit"
+  revertCommit "$headSha"
   # we do not have to close the backport pr
   # it closes automatically when we delete its target branch
 }
@@ -164,9 +158,25 @@ function deleteBranch() {
 
 function revertCommit() {
   if [ -n "$1" ]; then
+    git checkout main
     git pull
+    git branch case2-revert
+    git checkout case2-revert
     git revert --mainline 1 "$1" --no-edit
     git push
+    
+    # open a pull request to upstream
+    gh pr create \
+      --head backport-action:case2-revert \
+      --title "Case(2): Revert" \
+      --body "Reverts the changes of case 2"
+
+    # merge the pull request
+    gh pr merge \
+      --merge \
+      --subject "case(2): revert"
+      
+    deleteBranch case2-revert
   fi
 }
 
