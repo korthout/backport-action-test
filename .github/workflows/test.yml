@@ -25,6 +25,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.case == 'all' || github.event.inputs.case == 2
     steps:
+      - name: resync forked repo
+        run: |
+          gh repo sync \
+          --force \
+          --source korthout/backport-action-test \
+          backport-action/backport-action-test
       - uses: actions/checkout@v2
         with: 
           repository: backport-action/backport-action-test
