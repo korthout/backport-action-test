@@ -31,6 +31,8 @@ jobs:
           --force \
           --source korthout/backport-action-test \
           backport-action/backport-action-test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
         with: 
           repository: backport-action/backport-action-test
