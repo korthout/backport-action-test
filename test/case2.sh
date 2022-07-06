@@ -75,7 +75,6 @@ function main() {
   mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
 
   # find the commit sha of the head of the pr
-  local headSha
   headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
 
   # find the backport-pr-target-closed.yml workflow run on pull_request[closed]
@@ -186,6 +185,7 @@ function revertCommit() {
 
 # Initialise clean up
 mergeCommit=""
+headSha=""
 backport_branch=""
 trap 'cleanup' EXIT
 
