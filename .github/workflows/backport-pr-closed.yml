@@ -12,7 +12,7 @@ jobs:
     # Only run for case 1 (checked by label)
     # Don't run on closed unmerged pull requests
     if: >
-      contains(github.event.pull_request.labels, 'backport case1-backport-target')
+      contains(github.event.pull_request.labels.*.name, 'backport case1-backport-target')
       && github.event.pull_request.merged
     steps:
       - uses: actions/checkout@v2
