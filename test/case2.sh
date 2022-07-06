@@ -4,7 +4,7 @@
 # - pr-location: fork
 # - commits: 1
 # - merge-strategy: merge commit
-# - workflow: backport-pr-closed.yml
+# - workflow: backport-pr-target-closed.yml
 # - expects: 1 backport pr opened
 
 # This test is expected to be run in a checked out forked repo
@@ -15,14 +15,14 @@
 # - create a branch from main for new changes
 # - add a commit to new
 # - open a pull request to merge it to main on origin
-
-# To do:
 # - merge the pull request
 # - find the commit sha of the commit that merged the pr
 # - find the commit sha of the head of the pr
-# - find the backport-pr-closed.yml workflow run on pull_request[closed]
+# - find the backport-pr-target-closed.yml workflow run on pull_request[closed]
 # - wait for workflow to finish
 # - check that backport pull request is opened to target
+
+# To do:
 # - check that backport pull request contains cherry picked commits
 # - cleanup: revert merge to main, close backport-pr and delete both new branches
 
@@ -78,7 +78,7 @@ function main() {
   local headSha
   headSha=$(gh pr view --json commits --jq '.commits | map(.oid) | last' | cat)
 
-  # find the backport-pr-closed.yml workflow run on pull_request[closed]
+  # find the backport-pr-target-closed.yml workflow run on pull_request[closed]
   local backport_run_id
   local checks_index=0
   while [ -z "$backport_run_id" ]; do
@@ -89,11 +89,11 @@ function main() {
       exit 10
     fi
   done
-  echo "found backport-pr-closed workflow run: $backport_run_id"
+  echo "found backport-pr-target-closed workflow run: $backport_run_id"
 
   # wait for workflow to finish
   gh run watch "$backport_run_id" \
-    && echo "backport-pr-closed workflow run $backport_run_id finished"
+    && echo "backport-pr-target-closed workflow run $backport_run_id finished"
 
   # check that backport pull request is opened to target
   local backport_prs
@@ -124,7 +124,7 @@ function main() {
 function findBackportRun() {
   local wf_id
   wf_id=$(gh run list \
-      --workflow backport-pr-closed.yml \
+      --workflow backport-pr-target-closed.yml \
       --json headSha,databaseId \
       --limit 10 \
       --jq "map(select(.headSha == \"$1\")) | first | \"\(.databaseId)\"")
