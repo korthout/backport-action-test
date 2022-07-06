@@ -163,7 +163,7 @@ function revertCommit() {
     git branch case2-revert
     git checkout case2-revert
     git revert --mainline 1 "$1" --no-edit
-    git push
+    git push -u origin HEAD
     
     # open a pull request to upstream
     gh pr create \
