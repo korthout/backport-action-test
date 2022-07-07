@@ -14,7 +14,7 @@ Users of the backport-action run it in different ways:
 All of these scenarios should be accounted for in automated tests.
 Of course, there are unit and integration tests but these don't really show that the action works in the above cases.
 
-## Which cases are cover?
+## Which cases are covered?
 This test suite covers the following cases:
 
 | case.               | event                 | pull request | merge strategy  |
@@ -47,8 +47,8 @@ If you want to run the test against the backport-action, then:
 - (Optionally) choose case: all, 1, 2, etc
 
 If you want to run the tests against a specific version, then:
-- Checkout a new branch in this repo
 - Refer to your specific version or branch in all the `backport-pr-*.yml` workflow files,
   e.g. [.github/workflows/backport-pr-closed.yml](https://github.com/korthout/backport-action-test/blob/ebf96ba361706772b427f0cd137ecf6aa162b701/.github/workflows/backport-pr-closed.yml#L20).
-- Commit and push this branch
-- Run the test as described above, but choose your own branch to run the workflow from instead of `main`
+- Commit (e.g. `test: backport-action/pull/255`) and push this to `main`
+- Run the test as described above
+- Don't forget to revert the commit you pushed to `main`
