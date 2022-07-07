@@ -16,6 +16,8 @@ jobs:
       && github.event.pull_request.merged
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Backport
         uses: zeebe-io/backport-action@v0.0.7
         with:
