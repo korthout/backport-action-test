@@ -59,6 +59,7 @@ function main() {
   # merge the pull request
   gh pr merge \
     --merge \
+    --auto \
     --subject "case(1): merge pull request"
 
   # find the commit sha of the commit that merged the pr

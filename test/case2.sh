@@ -67,6 +67,7 @@ function main() {
   # merge the pull request
   gh pr merge \
     --merge \
+    --auto \
     --subject "case(2): merge pull request"
 
   # find the commit sha of the commit that merged the pr
@@ -177,6 +178,7 @@ function revertCommit() {
     # merge the pull request
     gh pr merge \
       --merge \
+      --auto \
       --subject "case(2): revert"
     git checkout main
     deleteBranch case2-revert
