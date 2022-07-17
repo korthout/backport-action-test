@@ -132,7 +132,6 @@ function cleanup() {
   set +e
   git checkout main
   deleteBranch case1-backport-target
-  deleteBranch case1-new-changes
   deleteBranch "$backport_branch"
   revertCommit "$mergeCommit"
   # we do not have to close the backport pr

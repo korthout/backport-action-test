@@ -140,7 +140,6 @@ function cleanup() {
   git checkout main
   # dont delete the backport-target, this script has no permissions to recreate it
   # deleteBranch case2-backport-target
-  deleteBranch case2-new-changes
   revertCommit "$headSha"
   # we have to close the backport pr directly
   # we cannot automatically close it by deleting its branch
@@ -179,7 +178,6 @@ function revertCommit() {
     gh pr merge \
       --merge \
       --auto \
-      --delete-branch \
       --subject "case(2): revert"
     git checkout main
   fi
