@@ -145,6 +145,7 @@ function cleanup() {
   # we cannot automatically close it by deleting its branch
   # because the branch exists on upstream
   # #deleteBranch "$backport_branch"
+  deleteBranch case2-new-changes
   gh pr close "$backport_branch" --delete-branch
 }
 
