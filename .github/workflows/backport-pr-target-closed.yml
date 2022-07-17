@@ -15,7 +15,7 @@ jobs:
       contains(github.event.pull_request.labels.*.name, 'backport case2-backport-target')
       && github.event.pull_request.merged
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Backport
         uses: zeebe-io/backport-action@master
         with:
