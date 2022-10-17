@@ -16,8 +16,6 @@ jobs:
       && github.event.pull_request.merged
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
       - name: Backport
         uses: zeebe-io/backport-action@korthout-fetch-depth
         with:
