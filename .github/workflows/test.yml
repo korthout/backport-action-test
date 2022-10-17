@@ -6,7 +6,6 @@ on:
         type: choice
         description: Case
         options: 
-        - all
         - 1
         - 2
 
