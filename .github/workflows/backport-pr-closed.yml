@@ -17,12 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Backport
-        uses: zeebe-io/backport-action@korthout-optimal-fetch-depth
-        with:
-          # Required
-          # Token to authenticate requests to GitHub
-          github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
-
-          # Required
-          # Working directory for the backport action
-          github_workspace: ${{ github.workspace }}
+        uses: zeebe-io/backport-action@default-token-and-workspace
