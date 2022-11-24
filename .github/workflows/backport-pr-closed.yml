@@ -2,13 +2,13 @@ name: Backport on pull_request[closed]
 on:
   pull_request:
     types: [closed]
+permissions:
+  contents: write # so it can comment
+  pull-requests: write # so it can create pull requests
 jobs:
   backport:
     name: Backport
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # so it can comment
-      pull-requests: write # so it can create pull requests
     # Only run for case 1 (checked by label)
     # Don't run on closed unmerged pull requests
     if: >
