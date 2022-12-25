@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Backport
-        uses: zeebe-io/backport-action@default-token-and-workspace
+        uses: zeebe-io/backport-action@dependabot/npm_and_yarn/execa-6.1.0
