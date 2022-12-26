@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Backport
-        uses: korthout/backport-action@korthout-243-pr-metadata
+        uses: korthout/backport-action@korthout-304-target-branch-not-found
