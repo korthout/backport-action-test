@@ -17,4 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Backport
+        id: backport
         uses: korthout/backport-action@alxgrk-317
+      - name: Print output
+        run: echo "${{ steps.backport.outputs }}
