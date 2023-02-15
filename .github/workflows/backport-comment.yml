@@ -19,8 +19,8 @@ jobs:
       - name: Backport
         id: backport
         uses: korthout/backport-action@copy-labels
-        with:
-          # use default copy labels setting
+        # use default inputs
+        # with:
           # copy_labels_pattern: .+
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
