@@ -20,8 +20,8 @@ jobs:
         id: backport
         uses: korthout/backport-action@copy-labels
         with:
-          # copy all labels (backport labels are automatically skipped)
-          copy_labels_pattern: .+
+          # use default copy labels setting
+          # copy_labels_pattern: .+
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
       - name: Print was_successful_by_target output
