@@ -62,7 +62,8 @@ function main() {
     --head backport-action:case2-new-changes \
     --title "Case(2): Add a changed line" \
     --body "Adds a changed line" \
-    --label 'backport case2-backport-target'
+    --label 'backport case2-backport-target' \
+    --label 'should_copy'
 
   # merge the pull request
   gh pr merge \
