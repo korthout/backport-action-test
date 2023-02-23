@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Backport
         id: backport
-        uses: korthout/backport-action@copy-labels
+        uses: korthout/backport-action@dependabot/npm_and_yarn/execa-7.0.0
         with:
           # copy all labels (backport labels are automatically skipped)
           copy_labels_pattern: .+
