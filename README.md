@@ -1,7 +1,7 @@
 # Backport action test
 [![Test](https://github.com/korthout/backport-action-test/actions/workflows/test.yml/badge.svg)](https://github.com/korthout/backport-action-test/actions/workflows/test.yml)
 
-Automated end-to-end tests for [zeebe-io/backport-action](https://github.com/zeebe-io/backport-action).
+Automated end-to-end tests for [korthout/backport-action](https://github.com/korthout/backport-action).
 
 ## Why does this exist?
 To improve the reliability of the backport-action and to have confidence when improving it.
