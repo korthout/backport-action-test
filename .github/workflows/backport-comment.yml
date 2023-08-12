@@ -18,11 +18,10 @@ jobs:
       - uses: actions/checkout@v3
       - name: Backport
         id: backport
-        uses: korthout/backport-action@341-default-mainline
+        uses: korthout/backport-action@main
         with:
           # copy_labels_pattern: .+
           target_branches: case4-target-branches
-          default_mainline: 2
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
       - name: Print was_successful_by_target output
