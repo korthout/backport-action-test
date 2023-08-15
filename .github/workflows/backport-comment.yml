@@ -21,6 +21,7 @@ jobs:
         uses: korthout/backport-action@revert-376-revert-375-skipMergeCommits
         with:
           # copy_labels_pattern: .+
+          merge_commits: skip
           target_branches: case4-target-branches
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
