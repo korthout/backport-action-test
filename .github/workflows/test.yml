@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.case == 'all' || github.event.inputs.case == 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: test case 1
         run: test/case1.sh
         env:
@@ -32,7 +32,7 @@ jobs:
           backport-action/backport-action-test
         env:
           GITHUB_TOKEN: ${{ secrets.BACKPORT_ACTION_TOKEN }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with: 
           repository: backport-action/backport-action-test
           token: ${{ secrets.TRIGGER_EVENTS_TOKEN }}

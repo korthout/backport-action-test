@@ -15,7 +15,7 @@ jobs:
       contains(github.event.pull_request.labels.*.name, 'backport case1-backport-target')
       && github.event.pull_request.merged
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Backport
         id: backport
         uses: korthout/backport-action@main
