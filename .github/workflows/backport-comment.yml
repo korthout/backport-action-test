@@ -18,11 +18,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Backport
         id: backport
-        uses: korthout/backport-action@main
+        uses: jschmid1/backport-action@main
         with:
           # copy_labels_pattern: .+
           merge_commits: skip
           target_branches: case4-target-branches
+          copy_assignees: true
+          copy_milestone: true
+          copy_requested_reviewers: true
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
       - name: Print was_successful_by_target output
