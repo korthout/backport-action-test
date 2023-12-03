@@ -103,7 +103,7 @@ function main() {
   # check that backport pull request contains two cherry picked commits
   local backport_commit_matches
   backport_commit_matches=$(gh pr list \
-    --base case3-backport-target \
+    --base case5-backport-target \
     --json commits \
     --jq "first | .commits | map(.messageBody) | match(\".*cherry picked from commit ([a-f0-9]+)\") | .captures[].string | length")
   if [ ! 2 -eq "$backport_commit_matches" ]; then
