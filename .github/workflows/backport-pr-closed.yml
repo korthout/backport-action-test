@@ -9,11 +9,10 @@ jobs:
   backport:
     name: Backport
     runs-on: ubuntu-latest
-    # Only run for case 1 (checked by label)
-    # Don't run on closed unmerged pull requests
     if: >
-      contains(github.event.pull_request.labels.*.name, 'backport case1-backport-target')
+      startsWith(github.event.pull_request.labels.*.name, 'backport ')
       && github.event.pull_request.merged
+      && github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
       - name: Backport
