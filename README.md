@@ -17,12 +17,13 @@ Of course, there are unit and integration tests but these don't really show that
 ## Which cases are covered?
 This test suite covers the following cases:
 
-| case.               | event                 | pull request | merge strategy  |
-| ------------------- | --------------------- | ------------ | --------------- |
-| [1.](test/case1.sh) | `pull_request`        | `local`      | `merge-commit`  |
-| [2.](test/case2.sh) | `pull_request_target` | `fork`       | `merge-commit`  |
-| [3.](test/case3.sh) | `pull_request`        | `local`      | `squash`        |
-| [4.](test/case4.sh) | `pull_request`        | `local`      | `rebase`        |
+| case.               | event                 | pull request | merge strategy  | # commits |
+| ------------------- | --------------------- | ------------ | --------------- | --------- |
+| [1.](test/case1.sh) | `pull_request`        | `local`      | `merge-commit`  | 1         |
+| [2.](test/case2.sh) | `pull_request_target` | `fork`       | `merge-commit`  | 1         |
+| [3.](test/case3.sh) | `pull_request`        | `local`      | `squash`        | 2         |
+| [4.](test/case4.sh) | `pull_request`        | `local`      | `rebase`        | 1         |
+| [5.](test/case5.sh) | `pull_request`        | `local`      | `rebase`        | 2         |
 
 ## How does it work?
 The tests in this repository simulate user behavior: they commit changes, open pull requests and merge them.
