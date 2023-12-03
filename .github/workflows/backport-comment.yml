@@ -26,6 +26,10 @@ jobs:
           copy_assignees: true
           copy_milestone: true
           copy_requested_reviewers: true
+          experimental: >
+            {
+              "detect_merge_method": true
+            }
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
       - name: Print was_successful_by_target output
