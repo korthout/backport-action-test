@@ -20,9 +20,8 @@ jobs:
         id: backport
         uses: korthout/backport-action@test-respect-merge-method
         with:
-          # copy_labels_pattern: .+
+          copy_labels_pattern: .+
           merge_commits: skip
-          target_branches: case4-target-branches
           copy_assignees: true
           copy_milestone: true
           copy_requested_reviewers: true
