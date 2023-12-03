@@ -2,7 +2,7 @@
 
 # Test Case 3
 # - pr-location: non-fork
-# - commits: 1
+# - commits: 2
 # - merge-strategy: squash
 # - workflow: backport-pr-closed.yml
 # - expects: 1 backport pr opened
@@ -10,7 +10,7 @@
 # When run this test will:
 # - create a branch from main as backport target
 # - create a branch from main for new changes
-# - add a commit to new
+# - add two commits to new
 # - open a pull request to merge it to main
 # - merge the pull request using squash
 # - find the commit sha of the commit that merged the pr
