@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Backport
         id: backport
-        uses: korthout/backport-action@395-skip-merge-commits-in-suggestion
+        uses: korthout/backport-action@test-respect-merge-method
         with:
           # copy all labels (backport labels are automatically skipped)
           copy_labels_pattern: .+
