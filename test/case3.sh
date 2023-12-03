@@ -46,13 +46,16 @@ function main() {
   echo "A changed line is added" >> case3/file1
   git add case3/file1
   git commit -m "case(3): add changed line"
+  echo "Another changed line is added" >> case3/file1
+  git add case3/file1
+  git commit -m "case(3): add another changed line"
   git push -u origin case3-new-changes
 
   # open a pull request to merge it to main
   gh pr create \
     --head case3-new-changes \
     --base main \
-    --title "case(3): Add a changed line" \
+    --title "case(3): Squash and merge" \
     --body "Adds a changed line" \
     --label 'backport case3-backport-target' \
     --label 'should_copy'
@@ -61,7 +64,7 @@ function main() {
   gh pr merge \
     --squash \
     --auto \
-    --subject "case(3): merge pull request"
+    --subject "case(3): squash and merge pull request"
 
   # find the commit sha of the commit that merged the pr
   mergeCommit=$(gh pr view --json mergeCommit --jq '.mergeCommit.oid')
