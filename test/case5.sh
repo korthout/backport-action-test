@@ -136,8 +136,8 @@ function cleanup() {
   git checkout main
   deleteBranch case5-backport-target
   deleteBranch "$backport_branch"
-  revertCommit "$mergeCommit^"
   revertCommit "$mergeCommit"
+  revertCommit "$mergeCommit^"
   # we do not have to close the backport pr
   # it closes automatically when we delete its target branch
 }
