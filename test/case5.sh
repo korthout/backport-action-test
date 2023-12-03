@@ -105,7 +105,7 @@ function main() {
   backport_commit_matches=$(gh pr list \
     --base case5-backport-target \
     --json commits \
-    --jq "first | .commits | map(.messageBody) | match(\".*cherry picked from commit ([a-f0-9]+)\") | .captures[].string | length")
+    --jq "first | .commits | map(.messageBody | match(\".*cherry picked from commit ([a-f0-9]+)\") | .captures[].string) | length")
   if [ ! 2 -eq "$backport_commit_matches" ]; then
     echoerr "expected 2 cherry picked commits, but found cherry-picks for the following commits $backport_commit_matches"
     exit 30
