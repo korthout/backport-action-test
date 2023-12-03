@@ -10,7 +10,7 @@ jobs:
     name: Backport
     runs-on: ubuntu-latest
     if: >
-      startsWith(github.event.pull_request.labels.*.name, 'backport ')
+      contains(github.event.pull_request.labels.*.name, 'backport ')
       && github.event.pull_request.merged
       && github.event_name == 'pull_request_target'
     steps:
