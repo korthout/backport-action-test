@@ -22,6 +22,7 @@ This test suite covers the following cases:
 | [1.](test/case1.sh) | `pull_request`        | `local`      | `merge-commit`  |
 | [2.](test/case2.sh) | `pull_request_target` | `fork`       | `merge-commit`  |
 | [3.](test/case3.sh) | `pull_request`        | `local`      | `squash`        |
+| [4.](test/case4.sh) | `pull_request`        | `local`      | `rebase`        |
 
 ## How does it work?
 The tests in this repository simulate user behavior: they commit changes, open pull requests and merge them.
