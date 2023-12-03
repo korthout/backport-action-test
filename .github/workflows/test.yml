@@ -8,6 +8,7 @@ on:
         options: 
         - 1
         - 2
+        - 3
 
 jobs:
   test1:
@@ -38,5 +39,15 @@ jobs:
           token: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
       - name: test case 2
         run: test/case2.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
+
+  test3:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.case == 'all' || github.event.inputs.case == 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: test case 3
+        run: test/case3.sh
         env:
           GITHUB_TOKEN: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
