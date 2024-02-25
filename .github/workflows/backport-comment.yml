@@ -17,13 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT_KORTHOUT }}
+          token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
       - name: Backport
         id: backport
         uses: tasso94/backport-action@main
         with:
           copy_labels_pattern: .+
-          github_token: ${{ secrets.PAT_KORTHOUT }}
+          github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
           merge_commits: skip
           copy_assignees: true
           copy_milestone: true
