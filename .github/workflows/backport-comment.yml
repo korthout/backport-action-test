@@ -23,6 +23,7 @@ jobs:
         uses: tasso94/backport-action@main
         with:
           copy_labels_pattern: .+
+          github_token: ${{ secrets.PAT_KORTHOUT }}
           merge_commits: skip
           copy_assignees: true
           copy_milestone: true
