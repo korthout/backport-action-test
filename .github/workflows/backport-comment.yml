@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Backport
         id: backport
-        uses: korthout/backport-action@main
+        uses: tasso94/backport-action@main
         with:
           copy_labels_pattern: .+
           merge_commits: skip

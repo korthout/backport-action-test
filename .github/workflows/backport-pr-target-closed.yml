@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Backport
         id: backport
-        uses: korthout/backport-action@main
+        uses: tasso94/backport-action@main
         with:
           # copy all labels (backport labels are automatically skipped)
           copy_labels_pattern: .+
