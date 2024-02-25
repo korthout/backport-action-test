@@ -28,8 +28,8 @@ jobs:
           experimental: >
             {
               "detect_merge_method": true,
-              "remote_owner": 'backport-action',
-              "remote_repo": 'backport-action-test'
+              "remote_owner": "backport-action",
+              "remote_repo": "backport-action-test"
             }
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
