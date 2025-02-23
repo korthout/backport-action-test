@@ -18,7 +18,7 @@ jobs:
         id: backport
         uses: korthout/backport-action@main
         with:
-          add_labels: backport
+          add_labels: backport,another label
           add_author_as_assignee: true
           # copy all labels (backport labels are automatically skipped)
           copy_labels_pattern: .+
