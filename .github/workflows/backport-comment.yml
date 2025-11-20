@@ -16,7 +16,7 @@ jobs:
       github.event.comment.user.id != 97796249 &&
       contains(github.event.comment.body, '/backport')
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
       - name: Backport

@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.case == 'all' || github.event.inputs.case == 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: test case 1
         run: test/case1.sh
         env:
@@ -35,7 +35,7 @@ jobs:
           backport-action/backport-action-test
         env:
           GITHUB_TOKEN: ${{ secrets.BACKPORT_ACTION_TOKEN }}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with: 
           repository: backport-action/backport-action-test
           token: ${{ secrets.TRIGGER_EVENTS_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.case == 'all' || github.event.inputs.case == 3
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: test case 3
         run: test/case3.sh
         env:
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.case == 'all' || github.event.inputs.case == 4
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: test case 4
         run: test/case4.sh
         env:
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.case == 'all' || github.event.inputs.case == 5
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: test case 5
         run: test/case5.sh
         env:
