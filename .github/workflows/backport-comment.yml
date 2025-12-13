@@ -21,7 +21,7 @@ jobs:
           token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
       - name: Backport
         id: backport
-        uses: korthout/backport-action@main
+        uses: korthout/backport-action@korthout-501-node-24
         with:
           copy_labels_pattern: .+
           github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
