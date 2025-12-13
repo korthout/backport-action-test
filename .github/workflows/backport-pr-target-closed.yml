@@ -13,7 +13,7 @@ jobs:
       github.event.pull_request.merged
       && github.event.pull_request.head.repo.full_name != 'korthout/backport-action-test'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Backport
         id: backport
         uses: korthout/backport-action@korthout-501-node-24
