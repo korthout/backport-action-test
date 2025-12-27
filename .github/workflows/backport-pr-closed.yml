@@ -33,7 +33,8 @@ jobs:
           copy_labels_pattern: .+
           experimental: >
             {
-              "detect_merge_method": true
+              "detect_merge_method": true,
+              "dashboard_enabled": true
             }
           git_committer_name: ${{ steps.import-gpg.outputs.name }}
           git_committer_email: ${{ steps.import-gpg.outputs.email }}

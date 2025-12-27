@@ -32,7 +32,8 @@ jobs:
           experimental: >
             {
               "detect_merge_method": true,
-              "conflict_resolution": "draft_commit_conflicts"
+              "conflict_resolution": "draft_commit_conflicts",
+              "dashboard_enabled": true
             }
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"

@@ -22,7 +22,8 @@ jobs:
           copy_labels_pattern: .+
           experimental: >
             {
-              "detect_merge_method": true
+              "detect_merge_method": true,
+              "dashboard_enabled": true
             }
       - name: Print was_successful output
         run: echo "${{ steps.backport.outputs.was_successful }}"
