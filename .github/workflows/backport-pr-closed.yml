@@ -5,6 +5,7 @@ on:
 permissions:
   contents: write # so it can comment
   pull-requests: write # so it can create pull requests
+  issues: write # so it can create/update the dashboard issue
 jobs:
   backport:
     name: Backport
