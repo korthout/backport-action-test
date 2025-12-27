@@ -25,7 +25,7 @@ jobs:
           git_commit_gpgsign: true
       - name: Backport
         id: backport
-        uses: yafanasiev/backport-action@fix-git-command-env
+        uses: korthout/backport-action@backport-dashboard
         with:
           add_labels: backport,another label
           add_author_as_assignee: true

@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v6
       - name: Backport
         id: backport
-        uses: yafanasiev/backport-action@fix-git-command-env
+        uses: korthout/backport-action@backport-dashboard
         with:
           # copy all labels (backport labels are automatically skipped)
           copy_labels_pattern: .+
