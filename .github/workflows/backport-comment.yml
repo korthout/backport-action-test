@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
       - name: Backport
         id: backport
-        uses: korthout/backport-action@korthout-move-to-esbuild
+        uses: korthout/backport-action@korthout-switch-to-esm-modules
         with:
           copy_labels_pattern: .+
           github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
