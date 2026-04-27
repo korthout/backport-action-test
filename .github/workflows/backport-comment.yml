@@ -22,8 +22,9 @@ jobs:
           token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
       - name: Backport
         id: backport
-        uses: korthout/backport-action@main
+        uses: korthout/backport-action@korthout-415-summary-comment-2
         with:
+          comment_style: summary
           copy_labels_pattern: .+
           github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
           merge_commits: skip
