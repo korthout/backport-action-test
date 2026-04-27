@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
       - name: Backport
         id: backport
-        uses: korthout/backport-action@korthout-415-summary-comment-2
+        uses: korthout/backport-action@main
         with:
           comment_style: summary
           copy_labels_pattern: .+
