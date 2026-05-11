@@ -1,43 +1,36 @@
-name: Backport on issue_comment[created]
+name: Backport via comment
 on:
   issue_comment:
     types: [created]
 permissions:
   contents: write # so it can comment
   pull-requests: write # so it can create pull requests
-  issues: write # so it can create/update the dashboard issue
 jobs:
-  backport:
-    name: Backport
-    runs-on: ubuntu-latest
-    # Only run on comment containing `/backport`
+  determine-target-branch:
+    # Only run on PR comments starting with `/backport ` (note the trailing space — an argument is required).
     if: >
-      github.event_name == 'issue_comment' &&
       github.event.issue.pull_request &&
-      github.event.comment.user.id != 97796249 &&
-      contains(github.event.comment.body, '/backport')
+      startsWith(github.event.comment.body, '/backport ')
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.parse-comment.outputs.branch }}
     steps:
-      - uses: actions/checkout@v6
+      - id: parse-comment
+        # Take the first line after `/backport ` as the target branch.
+        # The comment body is passed via env to avoid script injection.
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          branch=$(printf '%s' "$COMMENT_BODY" | head -n1 | sed 's|^/backport ||')
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"
+
+  backport:
+    needs: determine-target-branch
+    if: needs.determine-target-branch.outputs.branch != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create backport pull requests
+        uses: korthout/backport-action@v4
         with:
-          token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
-      - name: Backport
-        id: backport
-        uses: korthout/backport-action@main
-        with:
-          comment_style: summary
-          copy_labels_pattern: .+
-          github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }}
-          merge_commits: skip
-          copy_assignees: true
-          copy_milestone: true
-          copy_requested_reviewers: true
-          experimental: >
-            {
-              "detect_merge_method": true,
-              "conflict_resolution": "draft_commit_conflicts",
-              "dashboard_enabled": true
-            }
-      - name: Print was_successful output
-        run: echo "${{ steps.backport.outputs.was_successful }}"
-      - name: Print was_successful_by_target output
-        run: echo "${{ steps.backport.outputs.was_successful_by_target }}"
+          target_branches: ${{ needs.determine-target-branch.outputs.branch }}
