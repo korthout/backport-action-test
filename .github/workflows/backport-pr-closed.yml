@@ -18,7 +18,7 @@ jobs:
       - name: Simulate target branch fetch failure (backport-action#858)
         run: |
           git config --replace-all remote.origin.fetch 'refs/heads/*:refs/remotes/origin/*'
-          git update-ref refs/remotes/origin/case1-backport-target HEAD
+          git update-ref refs/remotes/origin/case2-backport-target HEAD
       - name: Import GPG key
         id: import-gpg
         uses: crazy-max/ghaction-import-gpg@v7.0.0
