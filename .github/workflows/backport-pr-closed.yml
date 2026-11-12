@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [closed]
 permissions:
-  contents: read # backport-action#818: checkout's token can't push
+  contents: write # so it can comment
   pull-requests: write # so it can create pull requests
   issues: write # so it can create/update the dashboard issue
 jobs:
@@ -31,7 +31,6 @@ jobs:
           add_labels: backport,another label
           add_author_as_assignee: true
           comment_style: summary
-          github_token: ${{ secrets.BACKPORT_ACTION_TOKEN }} # backport-action#818: a PAT
           # copy all labels (backport labels are automatically skipped)
           copy_labels_pattern: .+
           experimental: >
